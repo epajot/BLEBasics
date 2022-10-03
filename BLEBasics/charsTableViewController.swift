@@ -552,9 +552,13 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
         
         if myNSString.contains("\"") // If it contains text in quotes, let's send the text (without the quotes)
         {
-            let wrongString = writeString.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let wrongString = writeString.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.literal, range: nil)
             let myNSString2: NSString = wrongString
             newValueNSD = myNSString2.data(using: NSUTF8StringEncoding)! as Data
+//            func replacingOccurrences(
+//                of target: String,
+//                with replacement: String
+//            ) -> String
         }
             
         else if myNSString.contains("0x") // But if it leads with 0x, let's scan for hex and send 32-bit hex value
