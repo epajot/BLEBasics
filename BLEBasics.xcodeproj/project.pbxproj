@@ -120,7 +120,7 @@
 				LastSwiftMigration = 0710;
 				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 1400;
-				ORGANIZATIONNAME = "Jack Rickard";
+				ORGANIZATIONNAME = "SHARE-telematics SA";
 				TargetAttributes = {
 					317191D01ABA2D5D00BD9A91 = {
 						CreatedOnToolsVersion = 6.2;
