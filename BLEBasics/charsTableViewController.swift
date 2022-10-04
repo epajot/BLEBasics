@@ -552,8 +552,9 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
         
         if myNSString.contains("\"") // If it contains text in quotes, let's send the text (without the quotes)
         {
-            let wrongString = writeString.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.literal, range: nil)
-            let myNSString2: NSString = wrongString
+//            let wrongString = writeString.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.literal, range: nil)
+            let wrongString = writeString.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
+            let myNSString2: NSString = wrongString as NSString
             newValueNSD = myNSString2.data(using: NSUTF8StringEncoding)! as Data
 //            func replacingOccurrences(
 //                of target: String,
