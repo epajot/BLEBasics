@@ -187,7 +187,7 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
         
         else
         {
-            var UpdateValue: Int = 0
+            var UpdateValue = 0
             
 //            characteristic.value!.getBytes(&UpdateValue, length: MemoryLayout<Int>.size) // Converts Data object to Integer
             characteristic.value!.copyBytes(to: &UpdateValue, count: MemoryLayout<Int>.size) // Converts Data object to Integer
