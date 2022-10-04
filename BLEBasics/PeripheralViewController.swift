@@ -26,9 +26,9 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
             tableView.dataSource = self
         }
     
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
         {
-            print("Peripheral: \(peripheral)")
+            print("Peripheral: \(String(describing: peripheral))")
         
             nameLabel.text = peripheral.name ?? "No Name"
             uuidLabel.text = peripheral.identifier.uuidString
@@ -38,7 +38,7 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
             peripheral.discoverServices(nil)
         }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?)
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?)
         {
             print("Did discover services.")
             if let error = error
@@ -53,9 +53,7 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
         
     }
     
-   
-    
-    func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?)
+    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?)
         {
             print("Did read RSSI.")
             if let error = error
@@ -65,7 +63,7 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
                 }
             else
                 {
-                    RSSILabel.text = "\(RSSI.integerValue)"
+                RSSILabel.text = "\(RSSI.intValue)"
             }
         }
     
@@ -76,7 +74,7 @@ class PeripheralViewController: UIViewController, CBPeripheralDelegate, UITableV
                     return UITableViewCell()
                 }
         
-            let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ServiceCell", for: indexPath as IndexPath)
             let service = services[indexPath.row]
             print("Service uuid Description: \(service.uuid.description)")
             cell.textLabel?.text = service.uuid.description
@@ -102,7 +100,7 @@ override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
                 let services = peripheral.services!  //services contains the list of services discovered for this peripheral
                 let service = services[tableView.indexPathForSelectedRow!.row] //service is the particular selected by tap
                 
-                 if let destinationVC = segue.destinationViewController as? charsTableViewController
+            if let destinationVC = segue.destination as? charsTableViewController
                     {
                         destinationVC.service = service  //Pass the selected service to charsTableViewController
                         destinationVC.peripheral = peripheral
@@ -110,8 +108,12 @@ override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
             }
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+       // TODO return ?
+    }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
         {
             return peripheral.services?.count ?? 0
         }

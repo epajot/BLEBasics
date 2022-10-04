@@ -269,7 +269,7 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
             }
             
             // SHORT FORM if let r = desc.description.rangeOfString("Characteristic Format")
-            if desc.description.rangeOfString("Characteristic Format", options: NSStringCompareOptions.LiteralSearch, range: desc.description.startIndex ..< desc.description.endIndex, locale: nil) != nil
+            if desc.description.rangeOfString("Characteristic Format", options: NSStringCompareOptions.literal, range: desc.description.startIndex ..< desc.description.endIndex, locale: nil) != nil
             {
                 characteristicFormatString[desc.characteristic.uuid] = "\(desc.value!)"
                     
@@ -413,7 +413,7 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
                 {
                     cell.rawValue.text = String(decoding: characteristicValue[Mycharacteristic.uuid]!, as: UTF8.self)
                             
-                    characteristicValue[Mycharacteristic.uuid]!.getBytes(&UpdateValue, length: MemoryLayout<Int64>.size) // Converts Data object to Integer
+                    characteristicValue[Mycharacteristic.uuid]!.copyBytes(to: &UpdateValue, count: MemoryLayout<Int64>.size) // Converts Data object to Integer
                         
                     cell.hexValue.text = String(format: "%2X", UpdateValue)
                     cell.decValue.text = String(format: "%2d", UpdateValue)
