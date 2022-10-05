@@ -255,34 +255,36 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
             var Units: UInt16 = 0
 
             print("\nDESCRIPTOR: \(String(describing: desc.characteristic?.uuid))....\(desc)....\(desc.uuid)...\(desc.value!)")
-        
-            if desc.description.rangeOfString("Characteristic User Description") != nil
+//
+//            if desc.description.rangeOfString("Characteristic User Description") != nil
+            if desc.description.range(of: "Characteristic User Description") != nil
+                
             {
                 characteristicUserDescription[desc.characteristic.uuid] = desc.value as? String
                 print("Stored User Description: \(desc.characteristic.uuid) : \(characteristicUserDescription[desc.characteristic.uuid]!) ")
             }
             
-            if desc.description.rangeOfString("Client Characteristic Configuration") != nil
+            if desc.description.range(of: "Client Characteristic Configuration") != nil
             {
                 characteristicSubscribed[desc.characteristic.uuid] = desc.value!.unsignedIntegerValue
                 print("Stored Client Characteristic Configuration (subscribed) : \(desc.characteristic.uuid) : \(characteristicSubscribed[desc.characteristic.uuid]!) ")
             }
             
             // SHORT FORM if let r = desc.description.rangeOfString("Characteristic Format")
-            if desc.description.rangeOfString("Characteristic Format", options: NSStringCompareOptions.literal, range: desc.description.startIndex ..< desc.description.endIndex, locale: nil) != nil
+            if desc.description.range(of: "Characteristic Format", options: NSString.CompareOptions.literal, range: desc.description.startIndex ..< desc.description.endIndex, locale: nil) != nil
             {
                 characteristicFormatString[desc.characteristic.uuid] = "\(desc.value!)"
                     
                 print("Presentation Format Descriptor:\(characteristicFormatString[desc.characteristic.uuid]!) ")
                     
-                desc.value!.getBytes(&numFormat, range: NSMakeRange(0, 1)) // Converts Data object to Integer
+                (desc.value! as AnyObject).getBytes(&numFormat, range: NSMakeRange(0, 1)) // Converts Data object to Integer
                 // print("Value data format: 0x\(NSString(format:"%2X",numFormat))....\(NumericType[numFormat]) ")
                 characteristicNumberFormat[desc.characteristic.uuid] = numFormat
                 characteristicNumberFormatString[desc.characteristic.uuid] = NumericType[numFormat]
                 print("Stored Number Format: \(desc.characteristic.uuid) : \(characteristicNumberFormat[desc.characteristic.uuid]!) ")
                 print("Stored Number Format String: \(desc.characteristic.uuid) : \(characteristicNumberFormatString[desc.characteristic.uuid]!) ")
                     
-                desc.value!.getBytes(&exponent, range: NSMakeRange(1, 1)) // Converts Data object to Integer
+                (desc.value! as AnyObject).getBytes(&exponent, range: NSMakeRange(1, 1)) // Converts Data object to Integer
                 // print("Value Exponent: \(exponent) ")
                 characteristicExponent[desc.characteristic.uuid] = exponent
                 print("Stored Exponent: \(desc.characteristic.uuid) : \(characteristicExponent[desc.characteristic.uuid]!) ")
@@ -361,7 +363,8 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
                     cell.ValueEntryField.textColor = UIColor.red
                     cell.ValueEntryField.borderStyle = UITextField.BorderStyle.bezel
                     cell.ValueEntryField.tag = indexPath.row
-                    cell.ValueEntryField.addTarget(self, action: #selector(charsTableViewController.newValue(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
+//                    cell.ValueEntryField.addTarget(self, action: #selector(charsTableViewController.newValue(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
+                    cell.ValueEntryField.addTarget(self, action: #selector(charsTableViewController.newValue(sender:)), for: UIControl.Event.editingDidEnd)
                 }
                 else { cell.ValueEntryField.isHidden = true }
                     
@@ -369,7 +372,8 @@ class charsTableViewController: UITableViewController, CBPeripheralDelegate, UIT
                 {
                     cell.Unsubscribe.isHidden = false
                     cell.Unsubscribe.tag = indexPath.row
-                    cell.Unsubscribe.addTarget(self, action: #selector(charsTableViewController.unSubscribe(_:)), forControlEvents: .TouchUpInside)
+//                    cell.Unsubscribe.addTarget(self, action: #selector(charsTableViewController.unSubscribe(_:)), forControlEvents: .TouchUpInside)
+                    cell.Unsubscribe.addTarget(self, action: #selector(charsTableViewController.unSubscribe(sender:)), for: .touchUpInside)
                 }
                 else { cell.Unsubscribe.isHidden = true }
                     
